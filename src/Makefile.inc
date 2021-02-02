@@ -4,23 +4,23 @@ SOURCES	  = $(MISCSRCS) papi.c papi_internal.c \
     extras.c sw_multiplex.c \
     papi_fwrappers.c papi_fwrappers_.c papi_fwrappers__.c upper_PAPI_FWRAPPERS.c \
     threads.c cpus.c $(OSFILESSRC) $(CPUCOMPONENT_C) papi_preset.c \
-    papi_vector.c papi_memory.c $(COMPSRCS)
+    papi_vector.c papi_memory.c $(COMPSRCS) dataprocessing_utils.c papi_accurate_multiplexing.c
 OBJECTS = $(MISCOBJS) papi.o papi_internal.o \
     papi_hl.o \
     extras.o sw_multiplex.o \
     papi_fwrappers.o papi_fwrappers_.o papi_fwrappers__.o upper_PAPI_FWRAPPERS.o \
     threads.o cpus.o $(OSFILESOBJ) $(CPUCOMPONENT_OBJ) papi_preset.o \
-    papi_vector.o papi_memory.o $(COMPOBJS)
+    papi_vector.o papi_memory.o $(COMPOBJS) dataprocessing_utils.o papi_accurate_multiplexing.o
 PAPI_EVENTS_TABLE = papi_events_table.h
 HEADERS  = $(MISCHDRS) $(OSFILESHDR) $(PAPI_EVENTS_TABLE) \
 	papi.h papi_internal.h papiStdEventDefs.h \
 	papi_preset.h threads.h cpus.h papi_vector.h \
 	papi_memory.h config.h \
 	extras.h sw_multiplex.h \
-	papi_common_strings.h components_config.h
+	papi_common_strings.h components_config.h papi_accurate_multiplexing.h dataprocessing_utils.h
 
 LIBCFLAGS += -I. $(CFLAGS) -DOSLOCK=\"$(OSLOCK)\" -DOSCONTEXT=\"$(OSCONTEXT)\"
-FHEADERS = fpapi.h f77papi.h f90papi.h
+FHEADERS = fpapi.h f77papi.h f90papi.h papi_accurate_multiplexing.h dataprocessing_utils.h
 # pkgconfig directory
 LIBPC = $(LIBDIR)/pkgconfig
 
@@ -147,6 +147,12 @@ papi_vector.o: papi_vector.c $(HEADERS)
 
 papi_preset.o: papi_preset.c $(HEADERS)
 	$(CC) $(LIBCFLAGS) $(OPTFLAGS) -c papi_preset.c -o papi_preset.o
+
+dataprocessing_utils.o: dataprocessing_utils.c $(HEADERS)
+	$(CC) $(LIBCFLAGS) $(OPTFLAGS) -c dataprocessing_utils.c -o dataprocessing_utils.o
+
+papi_accurate_multiplexing.o: papi_accurate_multiplexing.c $(HEADERS)
+	$(CC) $(LIBCFLAGS) $(OPTFLAGS) -c papi_accurate_multiplexing.c -o papi_accurate_multiplexing.o
 
 sw_multiplex.o: sw_multiplex.c $(HEADERS)
 	$(CC) $(LIBCFLAGS) $(OPTFLAGS) -c sw_multiplex.c -o sw_multiplex.o

@@ -53,6 +53,7 @@ typedef struct papi_vectors {
     int		(*shutdown_thread)	(hwd_context_t *);								/**< */
     int		(*shutdown_component)	(void);									/**< */
     int		(*user)			(int, void *, void *);							/**< */
+    int   (*read_raw)  (hwd_context_t *, hwd_control_state_t *, long long*);
 }papi_vector_t;
 
 extern papi_vector_t *_papi_hwd[];

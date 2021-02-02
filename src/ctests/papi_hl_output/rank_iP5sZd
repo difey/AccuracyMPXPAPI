@@ -1,0 +1,17 @@
+{
+  "cpu in mhz":"2294",
+  "threads":[
+    {
+      "id":"2900",
+      "regions":[
+        {
+          "do_flops":{
+            "region_count":"4",
+            "cycles":"635681960",
+            "perf::TASK-CLOCK":"272165590"
+          }
+        }
+      ]
+    }
+  ]
+}

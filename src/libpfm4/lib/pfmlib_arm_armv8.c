@@ -36,6 +36,7 @@
 #include "events/arm_cavium_tx2_events.h"    	/* Marvell ThunderX2 tables */
 #include "events/arm_marvell_tx2_unc_events.h" 	/* Marvell ThunderX2 PMU tables */
 #include "events/arm_fujitsu_a64fx_events.h"	/* Fujitsu A64FX PMU tables */
+#include "events/arm_huawei_kp920_events.h"		/* Huawei kunpeng920 tables */
 
 static int
 pfm_arm_detect_cortex_a57(void *this)
@@ -100,6 +101,22 @@ pfm_arm_detect_thunderx2(void *this)
 	}
 	if ((pfm_arm_cfg.implementer == 0x43) && /* Cavium */
 		(pfm_arm_cfg.part == 0xaf)) { /* Thunder2x */
+			return PFM_SUCCESS;
+	}
+	return PFM_ERR_NOTSUPP;
+}
+
+static int
+pfm_arm_detect_kunpeng920(void *this)
+{
+	int ret;
+
+	ret = pfm_arm_detect(this);
+	if (ret != PFM_SUCCESS)
+		return PFM_ERR_NOTSUPP;
+
+	if ((pfm_arm_cfg.implementer == 0x48) && /* Huawei */
+		(pfm_arm_cfg.part == 0xd01)) { /* Kunpeng920 */
 			return PFM_SUCCESS;
 	}
 	return PFM_ERR_NOTSUPP;
@@ -206,6 +223,31 @@ pfmlib_pmu_t arm_thunderx2_support={
 	.pe			= arm_thunderx2_pe,
 
 	.pmu_detect		= pfm_arm_detect_thunderx2,
+	.max_encoding		= 1,
+	.num_cntrs		= 6,
+
+	.get_event_encoding[PFM_OS_NONE] = pfm_arm_get_encoding,
+	 PFMLIB_ENCODE_PERF(pfm_arm_get_perf_encoding),
+	.get_event_first	= pfm_arm_get_event_first,
+	.get_event_next		= pfm_arm_get_event_next,
+	.event_is_valid		= pfm_arm_event_is_valid,
+	.validate_table		= pfm_arm_validate_table,
+	.get_event_info		= pfm_arm_get_event_info,
+	.get_event_attr_info	= pfm_arm_get_event_attr_info,
+	 PFMLIB_VALID_PERF_PATTRS(pfm_arm_perf_validate_pattrs),
+	.get_event_nattrs	= pfm_arm_get_event_nattrs,
+};
+
+/* Huawei Kunpeng920 support */
+pfmlib_pmu_t arm_kunpeng920_support={
+	.desc			= "Huawei Kunpeng920",
+	.name			= "arm_kunpeng920",
+	.pmu			= PFM_PMU_ARM_KUNPENG920,
+	.pme_count		= LIBPFM_ARRAY_SIZE(arm_kunpeng920_pe),
+	.type			= PFM_PMU_TYPE_CORE,
+	.pe			= arm_kunpeng920_pe,
+
+	.pmu_detect		= pfm_arm_detect_kunpeng920,
 	.max_encoding		= 1,
 	.num_cntrs		= 6,
 

@@ -123,7 +123,7 @@ ARCH_MAN += libpfm_arm_xgene.3 \
 	    libpfm_arm_ac8.3 \
 	    libpfm_arm_ac9.3 \
 	    libpfm_arm_qcom_krait.3 \
-	    libpfm_arm_a64fx.3
+	    libpfm_arm_a64fx.3 
 endif
 
 ifeq ($(CONFIG_PFMLIB_ARCH_ARM64),y)

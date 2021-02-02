@@ -1259,6 +1259,17 @@ _pe_read_nogroup( pe_control_t *pe_ctl ) {
 
 }
 
+static int _pe_read_raw(hwd_context_t *ctx, hwd_control_state_t *ctl, long long *buf)
+{
+	pe_control_t *pe_ctl = (pe_control_t*)ctl;
+	int i;
+	
+	for(i = 0; i < pe_ctl->num_events; ++i)
+	{
+		read(pe_ctl->events[i].event_fd, buf+3*i, 3*sizeof(long long));
+	}
+}
+
 static int
 _pe_read( hwd_context_t *ctx, hwd_control_state_t *ctl,
 	       long long **events, int flags )
@@ -2623,6 +2634,7 @@ papi_vector_t _perf_event_vector = {
   .start =                 _pe_start,
   .stop =                  _pe_stop,
   .read =                  _pe_read,
+  .read_raw = 			   _pe_read_raw,
   .shutdown_thread =       _pe_shutdown_thread,
   .ctl =                   _pe_ctl,
   .update_control_state =  _pe_update_control_state,
