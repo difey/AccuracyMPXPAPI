@@ -84,6 +84,55 @@ you will need to do the following:
 
 ***
 
+# Compile NeoMPX
+
+clone the source code
+
+```bash
+git clone https://github.com/difey/AccuracyMPXPAPI.git
+```
+
+load intel parallel studio in pi cluster
+
+```bash
+module load intel-parallel-studio/cluster.2020.1-intel-19.1.1
+```
+
+install papi
+
+```bash
+cd NeoMPX/src
+./configure --prefix=$PWD/install
+make && make install
+```
+
+Run 'papi_avail'
+
+```bash
+cd install/bin
+./papi_avail
+```
+
+Add environments to your `.bashrc` file
+
+```bash
+export PAPI_DIR=/your/path/to/papi/source/code/install/
+export PATH=${PAPI_DIR}/bin:$PATH
+export LD_LIBRARY_PATH=${PAPI_DIR}/lib:$LD_LIBRARY_PATH
+export CPATH=${PAPI_DIR}/include:$CPATH
+export LIBRARY_PATH=${PAPI_DIR}/lib:$LIBRARY_PATH
+```
+
+and source it
+
+```bash
+source ~/.bashrc
+```
+
+# Ref
+
+[papi-wiki]([https://bitbucket.org/icl/papi/wiki/Downloading-and-Installing-PAPI.md](https://bitbucket.org/icl/papi/wiki/Downloading-and-Installing-PAPI.md))
+
 
 # Resources
 
